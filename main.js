@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MH forum translate tool
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.9
 // @description  Translate the text from a message in several languages using Google Cloud Translation API.
 // @author       Aeon
 // @match        *://myhordes.de/*
@@ -66,8 +66,8 @@
 			line-height: 19px;
 			border: 1px solid #f0d79e;
 			outline: 1px solid black;
-			padding-left: 5px;
 			padding-right: 5px;
+            padding-bottom: 10px;
 			margin-top: -30px;
             max-width: 300px;
 			display: none; /* The menu is hidden at first */
@@ -85,19 +85,15 @@
 			color: #f0d79e;
             margin-top: 4px;
             margin-left: 1px;
-
             border-bottom: 1px solid #b37c4a;
+            padding-left: 5px;
 		}
 
         #snowball_hud > h1 > img {
             margin-right: 10px;
         }
 
-         #snowball_hud > hr {
-            border-top: 1px solid #f0d79e;
-        }
-
-        #snowball_hud > select {
+        .snowball_main > select {
             width: 125px;
             left: 10px;
             position: relative;
@@ -134,6 +130,33 @@
 			max-height: 100%;
 		}
 
+        .snowball_main {
+            padding-left: 10px;
+        }
+
+        .snowball_main > ul {
+            padding-inline-start: 0px;
+            margin-block-end: 0px;
+            margin-block-start: 0px;
+            list-style-type: none;
+        }
+
+        .snowball_credits {
+            text-align: right;
+            font-size: 0.7em;
+            position: relative;
+            bottom: -10px;
+            font-style: italic;
+        }
+
+        .snowball_help {
+            padding-left: -10px;
+            text-align: center;
+        }
+
+        .snowball_help > * {
+            font-size: 0.7em;
+        }
 
 	`;
 	document.head.appendChild(style);
@@ -150,14 +173,26 @@
 	snowballHud.id = "snowball_hud";
 	snowballHud.innerHTML = `
 	<h1><img src="https://i.ibb.co/7W91Rw5/r-sandb-c3505991.png"><span>Snowball</span></h1>
+    <div class="snowball_main">
 	<div><p>Snowball ! Un script qui vise à ajouter des options de qualité de vie à MyHordes !</p></div>
-	<ul><li>Link 1</li><li>Link 2</li></ul>
-	Language du script: <select class="langSelector" id="languageSelect">
+	<ul>
+      <li>Fonctionnalités actuelles:</li>
+      <li><img src="https://myhordes.eu/build/images/emotes/arrowright.7870eca6.gif"> Ajout d'un boutton sur le forum pour traduire votre message dans la langue de votre choix !</li>
+    </ul>
+    <br />
+	Language du script:
+    <select class="langSelector" id="languageSelect">
+        <option value="fr">French</option>
 		<option value="en">English</option>
-		<option value="fr">French</option>
 		<option value="de">German</option>
 		<option value="es">Spanish</option>
 	</select>
+    <br />
+    <ul class="snowball_help">
+      <li><img src="https://myhordes.eu/build/images/emotes/bgum.50a67852.gif"> <a href="https://myhordes.eu/jx/forum/3142/84/1">Des questions ? Suggestions ? Bugs ? </a><img src="https://myhordes.eu/build/images/emotes/bgum.50a67852.gif"></li>
+    </ul>
+    <div class="snowball_credits">Un script par Aeon</div>
+    </div>
 `;
 
 	const snowballContainer = document.createElement('div');
@@ -252,7 +287,7 @@
 			if (textarea) {
 				let originalText = textarea.value;
 				// Send the text to Google Cloud Translation API for translation
-				fetch('https://translation.googleapis.com/language/translate/v2?key=[API KEY]', {
+				fetch('https://translation.googleapis.com/language/translate/v2?key=AIzaSyDKXD7L3KirOoq7ZhQKlX3LUAUbMminzok', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
