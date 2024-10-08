@@ -11,19 +11,9 @@
 // @grant        none
 // ==/UserScript==
 
-//TODO
-//Auto convert PA/PC/PE... Into their emoji.
-
 //Features
 //Translate your post in the selected lang
-//Control panel that allow to choose the user's lang.
-
-//Summary
-//Lang Ressources - 24
-//Control pannel ressources - 43
-// CSS injection
-// HTML injection
-//Add translation button (user's post)
+//Control panel that allow user to choose their lang.
 
 (function() {
 	'use strict';
