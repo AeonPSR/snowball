@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         MH forum translate tool
+// @name         Snowball - MH Translation
 // @namespace    http://tampermonkey.net/
 // @version      0.9
 // @description  Translate the text from a message in several languages using Google Cloud Translation API.
@@ -29,12 +29,12 @@
 	'use strict';
 
     //Define savedLang before everything else, so it doesn't crash.
-     let savedLang = localStorage.getItem('selectedLanguage') || 'en'; // Default to English if not set
-    /*
-    savedLang = localStorage.getItem('selectedLanguage');
-    if (savedLang) {
-        document.getElementById('languageSelect').value = savedLang;
-    }*/
+    // let savedLang = localStorage.getItem('selectedLanguage') || 'en'; // Default to English if not set
+
+    var savedLang = 'fr';
+    if (localStorage.getItem('selectedLanguage')) {
+        savedLang = localStorage.getItem('selectedLanguage');
+    }
 
 	//----------LANG RESSOURCES--------
 
@@ -66,7 +66,18 @@
         'feature1': "Ajout d'un bouton sur le forum pour traduire votre message dans la langue de votre choix !",
         'todo1':"Ajout de boutons pour pouvoir traduire le message d'un autre joueur !",
         'lang_info': 'Langue du script :',
-        'translate_first_option': 'Anglais',
+        'translate_first_option': "Anglais",
+        'translate_second_option': "Espagnol",
+        'translate_third_option': "Allemand",
+        'translate_fourth_option': "Français",
+        'translate_first_code': "en",
+        'translate_second_code': "es",
+        'translate_third_code': "de",
+        'translate_fourth_code': "fr",
+        'script_lng_first_option': "<option value='fr'>Français</option>",
+        'script_lng_second_option': "<option value='en'>Anglais</option>",
+        'script_lng_third_option': "<option value='es'>Espagnol</option>",
+        'script_lng_fourth_option': "<option value='de'>Allemand</option>",
         'french': 'Français',
         'english': 'Anglais',
         'spanish': 'Espagnol',
@@ -84,7 +95,18 @@
         'feature1': "Adds a button to the forum to translate your message into the language of your choice!",
         'todo1': "Adds buttons to allow you to translate another player's message!",
         'lang_info': 'Script language:',
-        'translate_first_option': 'French',
+        'translate_first_option': "French",
+        'translate_second_option': "Spanish",
+        'translate_third_option': "German",
+        'translate_fourth_option': "English",
+        'translate_first_code': "fr",
+        'translate_second_code': "es",
+        'translate_third_code': "de",
+        'translate_fourth_code': "en",
+        'script_lng_first_option': "<option value='en'>English</option>",
+        'script_lng_second_option': "<option value='fr'>French</option>",
+        'script_lng_third_option': "<option value='es'>Spanish</option>",
+        'script_lng_fourth_option': "<option value='de'>German</option>",
         'french': 'French',
         'english': 'English',
         'spanish': 'Spanish',
@@ -102,7 +124,18 @@
         'feature1': "Fügt dem Forum einen Button hinzu, um Ihre Nachricht in die Sprache Ihrer Wahl zu übersetzen!",
         'todo1': "Fügt Buttons hinzu, um die Nachricht eines anderen Spielers zu übersetzen!",
         'lang_info': 'Skriptsprache:',
-        'translate_first_option': 'Englisch',
+        'translate_first_option': "Englisch",
+        'translate_second_option': "Französisch",
+        'translate_third_option': "Deutsch",
+        'translate_fourth_option': "Spanisch",
+        'translate_first_code': "en",
+        'translate_second_code': "fr",
+        'translate_third_code': "de",
+        'translate_fourth_code': "es",
+        'script_lng_first_option': "<option value='es'>Spanisch</option>",
+        'script_lng_second_option': "<option value='fr'>Französisch</option>",
+        'script_lng_third_option': "<option value='en'>Englisch</option>",
+        'script_lng_fourth_option': "<option value='de'>Deutsch</option>",
         'french': 'Französisch',
         'english': 'Englisch',
         'spanish': 'Spanisch',
@@ -120,7 +153,18 @@
         'feature1': "¡Añade un botón en el foro para traducir tu mensaje al idioma que elijas!",
         'todo1': "Añade botones para traducir el mensaje de otro jugador.",
         'lang_info': 'Idioma del script:',
-        'translate_first_option': 'Inglés',
+        'translate_first_option': "Inglés",
+        'translate_second_option': "Francés",
+        'translate_third_option': "Alemán",
+        'translate_fourth_option': "Español",
+        'translate_first_code': "en",
+        'translate_second_code': "fr",
+        'translate_third_code': "de",
+        'translate_fourth_code': "es",
+        'script_lng_first_option': "<option value='es'>Español</option>",
+        'script_lng_second_option': "<option value='fr'>Francés</option>",
+        'script_lng_third_option': "<option value='en'>Inglés</option>",
+        'script_lng_fourth_option': "<option value='de'>Alemán</option>",
         'french': 'Francés',
         'english': 'Inglés',
         'spanish': 'Español',
@@ -132,10 +176,10 @@
     };
 
     const languages = [ //Languages the script can translate into.
-		{ value: 'en', label: i18n[savedLang].english},
-		{ value: 'fr', label: i18n[savedLang].french},
-		{ value: 'de', label: i18n[savedLang].german},
-		{ value: 'es', label: i18n[savedLang].spanish},
+		{ value: i18n[savedLang].translate_first_code, label: i18n[savedLang].translate_first_option},
+		{ value: i18n[savedLang].translate_second_code, label: i18n[savedLang].translate_second_option},
+		{ value: i18n[savedLang].translate_third_code, label: i18n[savedLang].translate_third_option},
+		{ value: i18n[savedLang].translate_fourth_code, label: i18n[savedLang].translate_fourth_option},
 	];
 
 
@@ -274,8 +318,46 @@
          }
 
          .translate-button {
-            width: fit-content !important;
+             width: fit-content !important;
+             margin: 0px !important;
+             border: 0px !important;
+             padding-top: 4px !important;
+             padding-bottom: 4px !important;
+             position: relative !important;
          }
+
+         .translate-language-dropdown {
+             width: inherit !important;
+         }
+
+         .translate-button:hover {
+             color: #f0d79e;
+         }
+/* RESPONSIVE */
+
+          @media (max-width: 480px) {
+              #snowball_container {
+                  top: 57px;
+              }
+          }
+
+/* SNOWBALL THEME */
+/*
+         .snowball-section {
+             background: none !important;
+             border: none !important;
+         }
+
+         .translate-button {
+             background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url(https://i.ibb.co/YQxdyYr/frozen-mh-button.png) !important;
+             color: white !important;
+         }
+
+         .translate-button:hover {
+             background: linear-gradient(rgba(0, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(https://i.ibb.co/YQxdyYr/frozen-mh-button.png) !important;
+             background-size: cover !important;
+         }
+*/
 
 	`;
 	document.head.appendChild(style);
@@ -306,10 +388,10 @@
     <div class="snowball_line"></div>
 	`+i18n[savedLang].lang_info+`
     <select class="langSelector" id="languageSelect">
-        <option value="fr">`+i18n[savedLang].french+`</option>
-		<option value="en">`+i18n[savedLang].english+`</option>
-		<option value="es">`+i18n[savedLang].spanish+`</option>
-		<option value="de">`+i18n[savedLang].german+`</option>
+        `+i18n[savedLang].script_lng_first_option+`
+		`+i18n[savedLang].script_lng_second_option+`
+		`+i18n[savedLang].script_lng_third_option+`
+		`+i18n[savedLang].script_lng_fourth_option+`
 	</select>
     <div class="snowball_line"></div>
     <ul class="snowball_help">
@@ -356,12 +438,6 @@
         location.reload();
     });
 
-    // Retrieve saved language from localStorage when the page loads
-    savedLang = localStorage.getItem('selectedLanguage');
-    if (savedLang) {
-        document.getElementById('languageSelect').value = savedLang;
-    }
-
 	//----ADD TRANSLATE BUTTON ON USER'S POST----
 
 	// Function to add the Translate button and dropdown to the forum editor
@@ -372,10 +448,11 @@
 		// Create a new section for the button and dropdown
 		const newSection = document.createElement('div');
 		newSection.className = 'forum-button-bar-section';
+        newSection.classList.add('snowball-section');
 
 		// Create the button component
 		const newButton = document.createElement('button');
-		newButton.className = 'forum-button-component translate-button';
+		newButton.className = 'forum-button-component translate-button forum-button';
 		newButton.innerText = i18n[savedLang].translate_into;
 
 		// Create the dropdown for language selection
@@ -424,14 +501,15 @@
 			let textarea = forumEditor.querySelector('textarea');
 			if (textarea) {
 				let originalText = textarea.value;
+                let truncatedText = originalText.split(/\[collapse=[A-Z]{2}\]/)[0]; //Prevent previous translations from being translated
 				// Send the text to Google Cloud Translation API for translation
-				fetch('https://translation.googleapis.com/language/translate/v2?key=[API_KEY]', {
+				fetch('https://translation.googleapis.com/language/translate/v2?key=AIzaSyDKXD7L3KirOoq7ZhQKlX3LUAUbMminzok', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
-						q: originalText,
+						q: truncatedText,
 						target: selectedLanguage,
 						format: 'text'
 					})
@@ -441,7 +519,7 @@
 					console.log('API Response:', data); // Log the API response
 					if (data && data.data && data.data.translations && data.data.translations[0]) {
 						let translatedText = data.data.translations[0].translatedText;
-						textarea.value = originalText + '\n[collapse=' + selectedLanguage.toUpperCase() + ']\n' + translatedText + "[/collapse]\n";
+						textarea.value = originalText + '[collapse=' + selectedLanguage.toUpperCase() + ']\n' + translatedText + "[/collapse]\n";
 					} else {
 						textarea.value = originalText + '\n[Translation Error #1]\nNo ' + selectedLanguage + ' translation available.\n';
 					}
@@ -473,5 +551,37 @@
 	// Optionally, re-activate the observer if the writing UI can appear multiple times
 	document.addEventListener('click', () => {
 		observer.observe(document.body, { childList: true, subtree: true });
-	});
+    });
+
+   //-----------------------------MOBILE STUFF I HATE MOBILE WE SHOULD DESTROY TOUCHSCREENS----------------------
+    const controlPanelIcon = document.getElementById('controlPanelIcon');
+    const controlPanel = document.getElementById('controlPanel');
+
+    // Detect if the user is on a mobile device using touch events
+    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    // If mobile, toggle on touch/click
+    if (isMobile) {
+        controlPanelIcon.addEventListener('click', function () {
+            // Toggle visibility
+            if (controlPanel.style.display === 'block') {
+                controlPanel.style.display = 'none'; // Hide if visible
+            } else {
+                controlPanel.style.display = 'block'; // Show if hidden
+            }
+        });
+
+        // Optionally close the panel if clicked/touched outside of it
+        document.addEventListener('click', function(event) {
+            if (!controlPanelIcon.contains(event.target) && !controlPanel.contains(event.target)) {
+                controlPanel.style.display = 'none'; // Close if outside clicked
+            }
+        });
+
+        document.addEventListener('touchstart', function(event) {
+            if (!controlPanelIcon.contains(event.target) && !controlPanel.contains(event.target)) {
+                controlPanel.style.display = 'none'; // Close if outside touched
+            }
+        });
+    }
 })();
