@@ -182,6 +182,34 @@
 		{ value: i18n[savedLang].translate_fourth_code, label: i18n[savedLang].translate_fourth_option},
 	];
 
+	//Balisa doc for correction
+	const balisaDictionnary = [
+		{ origin: 'aside]', translation: 'aparte]'},
+		{ origin: 'apart]', translation: 'aparte]'},
+		{ origin: 'auseinander]', translation: 'aparte]'},
+		{ origin: 'grande]', translation: 'big]'},
+		{ origin: 'enlace]', translation: 'link]'},
+		{ origin: 'enlace=', translation: 'link='},
+		{ origin: 'cita]', translation: 'quote]'},
+		{ origin: 'cita=', translation: 'quote='},
+		{ origin: 'código]', translation: 'code]'},
+		{ origin: 'colapso]', translation: 'collapse]'},
+		{ origin: 'colapso=', translation: 'collapse='},
+		{ origin: 'malo]', translation: 'bad]'},
+		{ origin: 'hora}', translation: 'hr}'},
+		{ origin: 'malo]', translation: 'bad]'},
+		{ origin: 'malo]', translation: 'bad]'},
+	];
+
+	function CorrectBalisa(inputText) {
+		let translatedText = inputText;
+
+		balisaDictionnary.forEach(entry => {
+			translatedText = translatedText.replace(new RegExp(entry.origin, 'g'), entry.translation);
+		});
+		return translatedText;
+	}
+
 
 	//----CONTROL PANNEL RESSOURCES-------
 	// -------- Inject CSS -------- //
@@ -519,7 +547,8 @@
 					console.log('API Response:', data); // Log the API response
 					if (data && data.data && data.data.translations && data.data.translations[0]) {
 						let translatedText = data.data.translations[0].translatedText;
-						textarea.value = originalText + '[collapse=' + selectedLanguage.toUpperCase() + ']\n' + translatedText + "[/collapse]\n";
+						let correctedText = CorrectBalisa(translatedText);
+						textarea.value = originalText + '[collapse=' + selectedLanguage.toUpperCase() + ']\n' + correctedText + "[/collapse]\n";
 					} else {
 						textarea.value = originalText + '\n[Translation Error #1]\nNo ' + selectedLanguage + ' translation available.\n';
 					}
