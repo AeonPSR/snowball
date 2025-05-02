@@ -1,0 +1,170 @@
+:root {
+--main_bg_color : #5c2b20;
+--lighter : #f0d79e;
+--divide_line_color : #b37c4a;
+}
+
+#snowball_container {
+	position: absolute;
+	top: 37px;
+	left: 10px;
+	z-index: 997;
+}
+
+#snowball_hud {
+	color: white;
+	z-index: 998;
+	background-color: var(--main_bg_color);
+	border: 1px solid #000000;
+	max-width: 862px;
+	font-size: 0.9em;
+	line-height: 19px;
+	border: 1px solid var(--lighter);
+	outline: 1px solid black;
+	padding-right: 5px;
+	padding-bottom: 10px;
+	margin-top: -30px;
+	max-width: 300px;
+	display: none; /* The menu is hidden at first */
+}
+
+#snowball_hud > h1 {
+	height: auto;
+	font-size: 8pt;
+	text-transform: none;
+	font-variant: small-caps;
+	background: none;
+	cursor: help;
+	margin: 0;
+	padding: 0;
+	color: var(--lighter);
+	margin-top: 4px;
+	margin-left: 1px;
+	border-bottom: 1px solid #b37c4a;
+	padding-left: 5px;
+}
+
+#snowball_hud > h1 > img {
+	margin-right: 10px;
+}
+
+#snowball_hud a {
+	color: var(--lighter);
+}
+
+.snowball_main > select {
+	width: 125px !important;
+	left: 10px;
+	position: relative;
+}
+
+#snowball_icon:hover + #snowball_hud, #snowball_hud:hover {
+	display: block; /* Show when icon is hovered */
+}
+
+#snowball_container:hover #snowball_icon {
+	border: none;
+	outline: 1px solid transparent;
+}
+
+#snowball_icon {
+	width: 30px;
+	height: 30px;
+	border: 1px solid var(--lighter);
+	outline: 1px solid black;
+	background-color: var(--main_bg_color);
+	border-radius: 50%;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden; /* Ensures image doesn't overflow the bounds */
+}
+
+#snowball_icon img {
+	image-rendering: pixelated; /* Keeps the pixel art intact */
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.snowball_main {
+	padding-left: 10px;
+}
+
+.snowball_main > ul {
+	padding-inline-start: 0px;
+	margin-block-end: 0px;
+	margin-block-start: 0px;
+	list-style-type: none;
+	font-size: 90%;
+	color: var(--lighter);
+}
+
+.snowball_credits {
+	text-align: right;
+	font-size: 0.7em;
+	position: relative;
+	bottom: -10px;
+	font-style: italic;
+	color: var(--lighter);
+}
+
+.snowball_help {
+	padding-left: -10px;
+	text-align: center;
+	color: var(--lighter);
+}
+
+.snowball_help > * {
+	font-size: 0.8em;
+}
+
+.snowball_line {
+	border-bottom: 1px solid var(--divide_line_color);
+	padding-top: 10px;
+	margin-bottom: 10px;
+}
+
+.translate-button {
+	width: fit-content !important;
+	margin: 0px !important;
+	border: 0px !important;
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
+	position: relative !important;
+}
+
+.translate-language-dropdown {
+	width: inherit !important;
+}
+
+.translate-button:hover {
+	color: #f0d79e;
+}
+/* RESPONSIVE */
+
+@media (max-width: 480px) {
+	#snowball_container {
+		top: 57px;
+	}
+}
+
+/* SNOWBALL THEME */
+/*
+.snowball-section {
+	background: none !important;
+	border: none !important;
+}
+
+.translate-button {
+	background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url(https://i.ibb.co/YQxdyYr/frozen-mh-button.png) !important;
+	color: white !important;
+}
+
+.translate-button:hover {
+	background: linear-gradient(rgba(0, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(https://i.ibb.co/YQxdyYr/frozen-mh-button.png) !important;
+	background-size: cover !important;
+}
+*/
