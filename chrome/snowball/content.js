@@ -197,13 +197,13 @@
 			});
 			return translatedText;
 		}
-/* Unecessary due to the manifest ?
+
 		//Add the css to the page
 		const link = document.createElement('link');
 		link.rel = 'stylesheet';
 		link.href = realBrowser.runtime.getURL('style.css'); // `chrome.runtime.getURL` for Chrome
 		document.head.appendChild(link);
-*/
+
 		// DOM manipulation functions
 
 		async function loadTemplate(filePath) {
@@ -280,7 +280,7 @@
 
 		// Translation functionality
 		function handleTranslation(textarea, selectedLanguage, originalText) {
-			let truncatedText = originalText.split(/\[collapse=[A-Z]{2}\]/)[0];
+			let truncatedText = originalText.replace(/\[lang_[a-z]{2}=[^\]]+\][\s\S]*?\[\/lang_[a-z]{2}\]/gi, '').trim();
 			
 			fetch('https://translation.googleapis.com/language/translate/v2?key=AIzaSyDKXD7L3KirOoq7ZhQKlX3LUAUbMminzok', {
 			method: 'POST',
@@ -293,12 +293,20 @@
 				format: 'text'
 			})
 			})
-			.then(response => response.json())
+			.then(response => {
+				if (!response.ok) {
+					// If the response is not OK, throw an error with the status and message
+					return response.json().then(errorData => {
+					throw new Error(`API request failed: ${errorData.error.message}`);
+					});
+				}
+				return response.json();
+			})
 			.then(data => {
 			if (data?.data?.translations?.[0]) {
 				let translatedText = data.data.translations[0].translatedText;
 				let correctedText = CorrectBalisa(translatedText);
-				textarea.value = originalText + '[collapse=' + selectedLanguage.toUpperCase() + ']\n' + correctedText + "[/collapse]\n";
+				textarea.value = originalText + '\n[lang_' + selectedLanguage.toLowerCase() + '= ]' + correctedText + '[/lang_' + selectedLanguage.toLowerCase() + ']\n';
 			} else {
 				textarea.value = originalText + '\n[Translation Error #1]\nNo ' + selectedLanguage + ' translation available.\n';
 			}
@@ -336,11 +344,12 @@
 			});
 
 			// Add "I'm Feeling Lucky" option
+/*
 			const luckyOption = document.createElement('option');
 			luckyOption.value = "lucky"; //Will be replaced by a random stuff when selected.
 			luckyOption.text = i18n[savedLang].lucky;
 			languageDropdown.appendChild(luckyOption);
-
+*/
 			// Append the dropdown and button to the new section
 			newSection.appendChild(newButton);
 			newSection.appendChild(languageDropdown);
@@ -357,11 +366,12 @@
 			
 			newButton.addEventListener('click', function() {
 			let selectedLanguage = languageDropdown.value;
+			/*
 			if (selectedLanguage === 'lucky') {
 				const randomLang = getRandomLanguage();
 				selectedLanguage = randomLang.value;
 			}
-			
+			*/
 			let textarea = forumEditor.querySelector('textarea');
 			if (textarea) {
 				handleTranslation(textarea, selectedLanguage, textarea.value);

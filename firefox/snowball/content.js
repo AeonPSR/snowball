@@ -197,7 +197,7 @@
 			});
 			return translatedText;
 		}
-// Unecessary due to the manifest ?
+
 		//Add the css to the page
 		const link = document.createElement('link');
 		link.rel = 'stylesheet';
