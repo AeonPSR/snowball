@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Snowball - MH QoL",
-	"version": "1",
+	"version": "1.2",
 	"description": "Translate the text from a message in several languages using Google Cloud Translation API.",
 	"permissions": [
 		"storage",
