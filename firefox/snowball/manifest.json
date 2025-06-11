@@ -22,14 +22,18 @@
     "style.css",
     "img/arrowright.gif",
     "img/bgum.gif",
-    "img/snowball.png"
+    "img/snowball.png",
+	"img/Translate_logo.svg"
   ],
   "background": {
     "page": "background.html"
   },
   "content_scripts": [{
     "matches": ["*://myhordes.eu/*"],
-    "js": ["content.js"],
+    "js": [
+      "content.js",
+      "translateOtherPosts.js"
+    ],
     "css": ["style.css"]
   }],
   "icons": {
