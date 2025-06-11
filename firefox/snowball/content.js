@@ -433,7 +433,15 @@
 		initialize();
 		
 	} else {
-		console.log("Snowball: re-launch prevented")
+		//console.log("Snowball: re-launch prevented")
 	}
+	
+	
+	
+	//On charge le script pour les blocs de traductions sur les posts
+	const script = document.createElement('script');
+	script.src = chrome.runtime.getURL('translateOtherPosts.js');
+	script.onload = () => script.remove();
+	(document.head || document.documentElement).appendChild(script);
 
 })();

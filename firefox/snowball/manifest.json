@@ -16,6 +16,7 @@
   "web_accessible_resources": [
     "content.js",
     "service-worker.js",
+	"translateOtherPosts.js",
     "snowballHud.html",
     "snowballIcon.html",
     "style.css",

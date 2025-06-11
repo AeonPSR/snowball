@@ -1,4 +1,4 @@
-document.querySelectorAll('.forum-post').forEach(post => {
+function addTranslationPanel(post) {
     // Prevent duplicate panels
     if (post.nextElementSibling?.classList.contains('translation-panel')) return;
 	post.style.zIndex = '1';
@@ -73,5 +73,25 @@ document.querySelectorAll('.forum-post').forEach(post => {
 		tongue.style.transform = 'translateY(100%)';
 		tongue.style.opacity = '100%';
 	});
+}
 
+document.querySelectorAll('.forum-post').forEach(addTranslationPanel);
+
+// Observe DOM changes to detect new forum posts
+const observer = new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+            if (!(node instanceof HTMLElement)) continue;
+            if (node.matches('.forum-post')) {
+                addTranslationPanel(node);
+            } else {
+                node.querySelectorAll?.('.forum-post').forEach(addTranslationPanel);
+            }
+        }
+    }
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
 });
