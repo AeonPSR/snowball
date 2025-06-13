@@ -14,7 +14,7 @@ async function insertInlineSVG(relativePath, targetElement, options = {}) {
 	svg.style.top = '50%';
 	svg.style.left = '50%';
 	svg.style.transform = 'translate(-50%, -50%)';
-	svg.style.fill = options.fill || 'white';
+	svg.style.fill = options.fill || '#f0d79e';
 
 	console.log('Trying to insert SVG into', targetElement);
 	targetElement.appendChild(svg);
@@ -80,7 +80,7 @@ function addTranslationPanel(post) {
 	tongue.style.outline = '1px solid black';
 	panel.appendChild(tongue);
 	
-	insertInlineSVG('img/Translate_logo.svg', tongue, { fill: 'white' });
+	insertInlineSVG('img/Translate_logo.svg', tongue, { fill: '#f0d79e' });
 	
 	// Insert panel directly after the post element
 	post.parentNode.insertBefore(panel, post.nextSibling);
