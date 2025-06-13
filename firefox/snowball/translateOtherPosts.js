@@ -1,5 +1,6 @@
 async function insertInlineSVG(relativePath, targetElement, options = {}) {
-	const path = browser.runtime.getURL(relativePath); // ✅ Force resolution here
+	const realBrowser = typeof browser !== 'undefined' ? browser : chrome;
+	const path = realBrowser.runtime.getURL(relativePath); // ✅ Force resolution here
 	const res = await fetch(path);
 	const svgText = await res.text();
 	const tempDiv = document.createElement('div');
@@ -15,6 +16,7 @@ async function insertInlineSVG(relativePath, targetElement, options = {}) {
 	svg.style.transform = 'translate(-50%, -50%)';
 	svg.style.fill = options.fill || 'white';
 
+	console.log('Trying to insert SVG into', targetElement);
 	targetElement.appendChild(svg);
 }
 

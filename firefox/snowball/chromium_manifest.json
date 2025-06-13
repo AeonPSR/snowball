@@ -1,12 +1,15 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Snowball - MH QoL",
   "version": "1.2",
   "description": "Translate the text from a message in several languages using Google Cloud Translation API.",
   "permissions": [
     "storage",
     "tabs",
-    "activeTab",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
     "*://myhordes.de/*",
     "*://myhordes.eu/*",
     "*://myhord.es/*",
@@ -14,21 +17,26 @@
     "https://translation.googleapis.com/*"
   ],
   "background": {
-    "page": "background.html"
+    "service_worker": "service-worker.js"
   },
   "content_scripts": [
     {
-      "matches": ["*://myhordes.eu/*", "*://myhordes.de/*"],
+      "matches": ["*://myhordes.eu/*"],
       "js": ["content.js", "translateOtherPosts.js"],
       "css": ["style.css"],
       "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
-    "img/arrowright.gif",
-    "img/bgum.gif",
-    "img/snowball.png",
-    "img/Translate_logo.svg"
+    {
+      "resources": [
+        "img/arrowright.gif",
+        "img/bgum.gif",
+        "img/snowball.png",
+        "img/Translate_logo.svg"
+      ],
+      "matches": ["*://myhordes.eu/*"]
+    }
   ],
   "icons": {
     "16": "img/snowball.png",
