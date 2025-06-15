@@ -66,6 +66,7 @@
 			'credits': 'Un script par ',
 			'translate_into': "Traduire mon message en",
 			'lucky': "J'ai de la chance",
+			'activate_translate_bloc': "Activer le menu de traduction sur les messages: ",
 		};
 		// English translations
 		i18n[I18N.LANG.EN] = {
@@ -95,6 +96,7 @@
 			'credits': 'A script by ',
 			'translate_into': "Translate my message into",
 			'lucky': "I'm feeling lucky !",
+			'activate_translate_bloc': "Enable the translation menu on posts",
 		};
 		// German translations
 		i18n[I18N.LANG.DE] = {
@@ -124,6 +126,7 @@
 			'credits': 'Ein Script von ',
 			'translate_into': "Meine Nachricht übersetzen in",
 			'lucky': "Ich habe Glück",
+			'activate_translate_bloc': "Übersetzungsmenü in den Beiträgen aktivieren",
 		};
 		// Spanish translations
 		i18n[I18N.LANG.ES] = {
@@ -153,6 +156,7 @@
 			'credits': 'Un script por ',
 			'translate_into': "Traducir mi mensaje a",
 			'lucky': "Tengo suerte",
+			'activate_translate_bloc': "Activar el menú de traducción en los mensajes",
 		};
 
 		const languages = [ //Languages the script can translate into.
@@ -235,7 +239,8 @@
 					.replace('{{script_lng_third_option}}', i18n[savedLang].script_lng_third_option)
 					.replace('{{script_lng_fourth_option}}', i18n[savedLang].script_lng_fourth_option)
 					.replace('{{help}}', i18n[savedLang].help)
-					.replace('{{credits}}', i18n[savedLang].credits);
+					.replace('{{credits}}', i18n[savedLang].credits)
+					.replace('{{activate_translate_bloc}}', i18n[savedLang].activate_translate_bloc)
 				
 				const snowballHud = document.createElement('div');
 				snowballHud.innerHTML = snowballHudHTML;
@@ -257,6 +262,26 @@
 					initializeLanguageSelector();
 				}
 			}
+			
+			document.getElementById('showTranslationPanels')?.addEventListener('change', (e) => {
+				const show = e.target.checked;
+				// Save the value
+				realBrowser.storage.local.set({ showTranslationPanels: show });
+				// Update panels
+				document.querySelectorAll('.translation-panel').forEach(panel => {
+					panel.style.display = show ? 'flex' : 'none';
+				});
+			});
+			
+			//Load saved setting for translation on posts
+			realBrowser.storage.local.get(['showTranslationPanels'], (result) => {
+				const show = result.showTranslationPanels ?? false; // Default = false = hidden
+				const toggle = document.getElementById('showTranslationPanels');
+				if (toggle) toggle.checked = show;
+				document.querySelectorAll('.translation-panel').forEach(panel => {
+					panel.style.display = show ? 'flex' : 'none';
+				});
+			});
 		}
 
 		// Event listeners for language selection

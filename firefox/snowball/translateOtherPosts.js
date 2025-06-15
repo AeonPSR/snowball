@@ -16,11 +16,14 @@ async function insertInlineSVG(relativePath, targetElement, options = {}) {
 	svg.style.transform = 'translate(-50%, -50%)';
 	svg.style.fill = options.fill || '#f0d79e';
 
-	console.log('Trying to insert SVG into', targetElement);
+	//console.log('Trying to insert SVG into', targetElement);
 	targetElement.appendChild(svg);
 }
 
-
+function isTranslationToggleEnabled() {
+	const toggle = document.getElementById('showTranslationPanels');
+	return toggle?.checked === true; // Only true if it's explicitly checked
+}
 
 function addTranslationPanel(post) {
 	// Prevent duplicate panels
@@ -32,12 +35,13 @@ function addTranslationPanel(post) {
 	panel.className = 'translation-panel';
 	panel.style.padding = '8px';
 	panel.style.background = '#4a261e';
-	panel.style.display = 'flex';
+	panel.style.display = isTranslationToggleEnabled() ? 'flex' : 'none';
 	panel.style.justifyContent = 'center';
 	panel.style.gap = '10px';
 	panel.style.flexWrap = 'wrap';
 	panel.style.marginTop = '-10px';
 	panel.style.width = '60%';
+	panel.style.minWidth = '250px';
 	panel.style.height = '40px';
 	panel.style.borderRadius = '0px 0px 40px 40px';
 	panel.style.transform = 'translate(1%, -102%)';
@@ -68,7 +72,7 @@ function addTranslationPanel(post) {
 	
 	const tongue = document.createElement('div');
 	tongue.style.background = '#4a261e';
-	tongue.style.width = '15%';
+	tongue.style.width = '46px';
 	tongue.style.position = 'absolute';
 	tongue.style.height = '35px';
 	tongue.style.left = '6px';
