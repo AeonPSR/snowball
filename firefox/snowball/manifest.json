@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": ["*://myhordes.eu/*", "*://myhordes.de/*"],
-      "js": ["content.js", "translateOtherPosts.js"],
+      "js": ["content.js", "translateOtherPosts.js", "utils.js"],
       "css": ["style.css"],
       "run_at": "document_idle"
     }

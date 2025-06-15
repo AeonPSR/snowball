@@ -1,3 +1,47 @@
+function protectHTMLTags(inputHTML) {
+  const placeholders = {};
+  let counter = 0;
+
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = inputHTML;
+
+  function walk(node) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const openTag = `[[TAG_${counter}]]`;
+      const closeTag = `[[/TAG_${counter}]]`;
+      const originalOpen = node.outerHTML.match(/^<[^>]+?>/)[0];
+      const originalClose = `</${node.tagName.toLowerCase()}>`;
+
+      placeholders[openTag] = originalOpen;
+      placeholders[closeTag] = originalClose;
+
+      const innerHTML = node.innerHTML;
+      const placeholderHTML = `${openTag}${innerHTML}${closeTag}`;
+      node.outerHTML = placeholderHTML;
+
+      counter++;
+    } else if (node.nodeType === Node.TEXT_NODE) {
+      return; // skip text nodes
+    }
+  }
+
+  const children = Array.from(tempDiv.childNodes);
+  children.forEach(walk);
+
+  return {
+    textWithPlaceholders: tempDiv.innerHTML,
+    placeholders
+  };
+}
+
+function restoreHTMLTags(translatedText, placeholders) {
+  let result = translatedText;
+  for (const [placeholder, html] of Object.entries(placeholders)) {
+    result = result.replaceAll(placeholder, html);
+  }
+  return result;
+}
+
 async function insertInlineSVG(relativePath, targetElement, options = {}) {
 	const realBrowser = typeof browser !== 'undefined' ? browser : chrome;
 	const path = realBrowser.runtime.getURL(relativePath); // ✅ Force resolution here
@@ -62,9 +106,39 @@ function addTranslationPanel(post) {
 		flag.setAttribute('data-flag', code);
 		flag.innerHTML = `<img alt="${code}" src="${src}">`;
 
+/*
 		flag.addEventListener('click', () => {
 			const content = post.querySelector('.forum-post-content')?.innerText || '';
 			alert(`Translate to ${code}:\n\n${content}`);
+		});
+*/
+		flag.addEventListener('click', async () => {
+			const rawHTML = post.querySelector('.forum-post-content')?.innerHTML || '';
+
+			// Clean unwanted language blocks
+			const tempDiv = document.createElement('div');
+			tempDiv.innerHTML = rawHTML;
+
+			// Remove collapsor + collapsed blocks
+			const collapsors = tempDiv.querySelectorAll('.collapsor[data-lang]');
+			collapsors.forEach(c => {
+				const next = c.nextElementSibling;
+				if (next?.classList.contains('collapsed')) next.remove();
+				c.remove();
+			});
+
+			// Protect HTML
+			const { text: protectedText, placeholders } = protectHTMLTags(tempDiv.innerHTML);
+
+			// Step 3: Translate (simulated)
+			//const translatedText = await sendToTranslationAPI(protectedText, code);
+			const translatedText = "";
+
+			// Step 4: Restore HTML
+			const finalHTML = restoreHTMLTags(translatedText, placeholders);
+
+			// Step 5: Show result (you'll probably insert it somewhere later)
+			alert(`Translated to ${code}:\n\n${finalHTML}`);
 		});
 
 		panel.appendChild(flag);
